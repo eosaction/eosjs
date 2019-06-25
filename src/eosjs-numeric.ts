@@ -7,6 +7,7 @@ const ripemd160 = require('./ripemd').RIPEMD160.hash as (a: Uint8Array) => Array
 
 const base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
 const base64Chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+const pubKeyPrefix = 'VHKD';
 
 function create_base58_map() {
     const base58M = Array(256).fill(-1) as number[];
@@ -273,8 +274,8 @@ export function stringToPublicKey(s: string): Key {
     if (typeof s !== 'string') {
         throw new Error('expected string containing public key');
     }
-    if (s.substr(0, 3) === 'EOS') {
-        const whole = base58ToBinary(publicKeyDataSize + 4, s.substr(3));
+    if (s.substr(0, pubKeyPrefix.length) === pubKeyPrefix) {
+        const whole = base58ToBinary(publicKeyDataSize + 4, s.substr(pubKeyPrefix.length));
         const key = { type: KeyType.k1, data: new Uint8Array(publicKeyDataSize) };
         for (let i = 0; i < publicKeyDataSize; ++i) {
             key.data[i] = whole[i];
@@ -309,7 +310,7 @@ export function publicKeyToString(key: Key) {
  * Leaves other formats untouched
  */
 export function convertLegacyPublicKey(s: string) {
-    if (s.substr(0, 3) === 'EOS') {
+    if (s.substr(0, pubKeyPrefix.length) === pubKeyPrefix) {
         return publicKeyToString(stringToPublicKey(s));
     }
     return s;
