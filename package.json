@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "babel-runtime": "6.26.0",
-    "eosjs-ecc": "4.0.4",
+    "eosjs-ecc": "file:../eosjs-ecc/",
     "text-encoding": "0.7.0"
   },
   "devDependencies": {
@@ -51,7 +51,7 @@
     "ts-loader": "5.3.3",
     "tslint": "5.12.1",
     "tslint-eslint-rules": "5.4.0",
-    "typescript": "3.3.3",
+    "typescript": "^3.3.3",
     "webpack": "4.29.5",
     "webpack-cli": "3.2.3"
   },

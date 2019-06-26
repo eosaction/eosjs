@@ -7,6 +7,8 @@ import * as ecc from 'eosjs-ecc';
 import { SignatureProvider, SignatureProviderArgs } from './eosjs-api-interfaces';
 import { convertLegacyPublicKey } from './eosjs-numeric';
 
+const pubKeyPrefix = 'VHKD';
+
 /** Signs transactions using in-process private keys */
 export class JsSignatureProvider implements SignatureProvider {
     /** map public to private keys */
@@ -18,7 +20,7 @@ export class JsSignatureProvider implements SignatureProvider {
     /** @param privateKeys private keys to sign with */
     constructor(privateKeys: string[]) {
         for (const k of privateKeys) {
-            const pub = convertLegacyPublicKey(ecc.PrivateKey.fromString(k).toPublic().toString());
+            const pub = convertLegacyPublicKey(ecc.PrivateKey.fromString(k).toPublic(pubKeyPrefix).toString(pubKeyPrefix));
             this.keys.set(pub, k);
             this.availableKeys.push(pub);
         }
